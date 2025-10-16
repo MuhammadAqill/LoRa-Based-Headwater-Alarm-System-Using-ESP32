@@ -1,4 +1,4 @@
-// Transmitter
+// Receiver
 
 #include <SPI.h>
 #include <LoRa.h>
@@ -8,8 +8,6 @@
 #define DIO0 26  // Pin interrupt LoRa — memberitahu ESP32 bila sesuatu peristiwa LoRa berlaku.
 
 void setup() {
-  
-  /* ----------------------------------------- Initialize serial communication at 115200 bits per second: ---------------------------------------*/
 
   Serial.begin(115200);
 
@@ -25,15 +23,22 @@ void setup() {
   }
 
   Serial.println("LoRa init OK!");
+  Serial.println("Waiting messege....");
 
 }
 
 void loop() {
-  LoRa.beginPacket();
-  LoRa.print("Hello World");
-  LoRa.endPacket();
 
-  Serial.println("Hello World");
-  Serial.println("📡 Data Berjaya di hantar!");
-  delay(2000);
+  int packetSize = LoRa.parsePacket();
+
+  if (packetSize) {
+    String incoming = "";
+    while (LoRa.available()) {
+      incoming += (char)LoRa.read();
+    }
+    
+    Serial.println(incoming);
+
+  }
+
 }
