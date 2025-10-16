@@ -37,7 +37,7 @@ void loop() {
       incoming += (char)LoRa.read();
     }
     
-    Serial.println(incoming);
+    Serial.print(incoming);
 
   }
 
